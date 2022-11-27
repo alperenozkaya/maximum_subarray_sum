@@ -6,7 +6,7 @@ import matplotlib.pyplot
 def main():
     A1 = np.array([-2, -5, 6, -2, -3, 1, 5, -6])
     A3 = np.array([13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7])
-    A4 = create_random_array(16)  # np array with 16 random values
+    A4 = create_random_array(100000)  # np array with 16 random values
     print_max_sum(A1, 'n2')
     print_max_sum(A3, 'n2')
     print_running_time(A1, 'n2')
@@ -23,6 +23,7 @@ def max_subarray_sum_n2(arr):
             if sum > max_sum:
                 max_sum = sum
     return max_sum
+
 
 def max_subarray_sum_nlgn(arr):
     dummy = 0
@@ -51,33 +52,33 @@ def create_random_array(n):
 def print_running_time(arr, cmp):  # cmp = complexity
     if cmp == 'n2':
         sum = 0
-        for i in range(0, 10):
+        for i in range(0, 5):
             start = time.perf_counter()
             max_subarray_sum_n2(arr)
             end = time.perf_counter()
             sum += (end - start)
-        exec_time = (sum / 10)
+        exec_time = (sum / 5)
 
         print("%.2f" % (exec_time * 10 ** 6), 'ms')  # running time in miliseconds
 
     elif cmp == 'nlgn':
         sum = 0
-        for i in range(0, 10):
+        for i in range(0, 5):
             start = time.perf_counter()
             max_subarray_sum_n2(arr)
             end = time.perf_counter()
             sum += (end - start)
-        exec_time = (sum / 10)
+        exec_time = (sum / 5)
 
         print("%.2f" % (exec_time * 10 ** 6), 'ms')  # running time in miliseconds
     elif cmp == 'n':
         sum = 0
-        for i in range(0, 10):
+        for i in range(0, 5):
             start = time.perf_counter()
             max_subarray_sum_n2(arr)
             end = time.perf_counter()
             sum += (end - start)
-        exec_time = (sum / 10)
+        exec_time = (sum / 5)
 
         print("%.2f" % (exec_time * 10 ** 6), 'ms')  # running time in miliseconds
     else:
