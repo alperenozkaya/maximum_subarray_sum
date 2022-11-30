@@ -13,8 +13,10 @@ def main():
     print_running_time(A1, 'n2')
     print_running_time(A3, 'n2')
     print_running_time(A4, 'n2')
-    max_subarray_sum_n(A1)
 
+    test = [170, 45, 75, 90, 802, 24, 2, 66]  # TODO: delete this in release
+    max_subarray_sum_n(test)    # TODO: delete this in release
+    print(test)
 def max_subarray_sum_n2(arr):
     max_sum = 0
     for i in range(0, len(arr) - 1):
@@ -29,17 +31,16 @@ def max_subarray_sum_n2(arr):
 def max_subarray_sum_nlgn(arr):
     dummy = 0
 
+
+'''This implements radix sort, a linear time sorting algorithm'''
 def max_subarray_sum_n(arr):
+    max_val = max(arr)  # finds the max value, and by that extent, largest radix
 
-    test = [2, 3 ,1, 2, 5, 6, 9, 4] # TODO: I will delete this
-    counting_sort(test, 1)  # TODO: I will also, delete this
-
-    dummy = 0
-
-'''This is used to find the largest number, and by that extend, largest number of digits.'''
-def extract_max(arr):
-
-    max_val = arr[0]
+    # will run for each radix.
+    digit = 1
+    while max_val / digit >= 1:
+        counting_sort(arr, digit)
+        digit *= 10 # to pass to next radix.
 
 '''Counting sort will run in each digit.'''
 def counting_sort(arr, digit):
@@ -53,23 +54,31 @@ def counting_sort(arr, digit):
     B = np.empty(len(arr)); B.fill(0)
 
     for i in range(len(arr)): # calculate C
-        C[arr[i]] +=1
+        C[((arr[i] // digit) % 10)] += 1
 
     # finds cumulative sum array, and by extension; place indicators for each element
     cumulative_sum = 0 # calculate CC
     for i in range(len(C)):
         cumulative_sum += C[i]
         CC[i] = cumulative_sum
+        C[i] += C[i - 1]
 
-    CC -=1 # subtract 1 from CC to get actual indicies, not indicators
+    CC -= 1 # subtract 1 from CC to get actual indices, not indicators
 
-    # puts new elements in place.
+    # move information obtained by CC into the new array, B
     arr_index = len(arr) - 1
     while arr_index >= 0:
-        index = int(CC[arr[arr_index]])
+
+        index = int(CC[(arr[arr_index] // digit) % 10])
         B[index] = arr[arr_index]
-        CC[arr[arr_index]] -= 1
+        CC[(arr[arr_index] // digit) % 10] -= 1
         arr_index -=1
+
+    # copy contents of B into original array.
+    for i in range(len(arr)):
+        arr[i] = int(B[i])
+
+
 
 
 def print_max_sum(arr, cmp):  # cmp = complexity
