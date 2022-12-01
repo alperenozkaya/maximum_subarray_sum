@@ -31,16 +31,6 @@ def main():
     list_sum_time_nlgn = []  # stores the subarray sum and running time values indexes -> 0:sum 1:time
     list_sum_time_n = []  # stores the subarray sum and running time values indexes -> 0:sum 1:time
 
-    #for i in range(0, 3):
-    #    for j in range(len(list_of_arrays)):
-    #        if i == 0:
-    #            print_running_time(list_of_arrays[j], 'n2', list_sum_time_n2)
-    #        elif i == 1:
-    #            print_running_time(list_of_arrays[j], 'nlgn', list_sum_time_nlgn)
-    #        else:
-    #            print_running_time(list_of_arrays[j], 'n', list_sum_time_n)
-    #plot_running_time(list_sum_time_n2, list_sum_time_nlgn, list_sum_time_n)
-
     for i in range(0, 3):
         for j in range(len(list_of_arrays)):
             if i == 0:
@@ -152,79 +142,15 @@ def running_time_with_thread(arr, cmp, total_t: list, sum_lst: list):  # cmp = c
         exec_time = end - start
         total_t.append(exec_time)
         sum_lst.append(max_sum)
-    if cmp == 'n':
+    elif cmp == 'n':
         start = time.perf_counter()
         max_sum = max_subarray_sum_n(arr)
         end = time.perf_counter()
         exec_time = end - start
         total_t.append(exec_time)
         sum_lst.append(max_sum)  # BETTER SOLUTION???????????????
-
-
-
-def print_running_time(arr, cmp, st: list):  # cmp = complexity
-    flag1 = True  # check whether the sum and time values already stored
-    max_sum = 0  # hold the value to add to list
-    if cmp == 'n2':
-        sum = 0
-        for i in range(0, 5):
-            if flag1 is True:
-                start = time.perf_counter()
-                max_sum = max_subarray_sum_n2(arr)
-                end = time.perf_counter()
-                sum += (end - start)
-                flag1 = False
-            else:
-                start = time.perf_counter()
-                max_subarray_sum_n2(arr)
-                end = time.perf_counter()
-                sum += (end - start)
-        exec_time = (sum / 5)
-        exec_time_ms = int(float("%.2f" % (exec_time * 10 ** 6)))
-        st.append([max_sum, exec_time_ms])
-        print("%.2f" % (exec_time * 10 ** 6), 'ms')  # running time in miliseconds
-
-    elif cmp == 'nlgn':
-        max_sum = 0  # hold the value to add to list
-        sum = 0
-        for i in range(0, 5):
-            if flag1 is True:
-                start = time.perf_counter()
-                max_sum = max_subarray_sum_nlgn(arr, 0, len(arr) - 1)
-                end = time.perf_counter()
-                sum += (end - start)
-                flag1 = False
-            else:
-                start = time.perf_counter()
-                max_subarray_sum_nlgn(arr, 0, len(arr) - 1)
-                end = time.perf_counter()
-                sum += (end - start)
-        exec_time = (sum / 5)
-        exec_time_ms = int(float("%.2f" % (exec_time * 10 ** 6)))
-        st.append([max_sum, exec_time_ms])
-        print("%.2f" % (exec_time * 10 ** 6), 'ms')  # running time in miliseconds
-    elif cmp == 'n':
-        max_sum = 0  # hold the value to add to list
-        sum = 0
-        for i in range(0, 5):
-            if flag1 is True:
-                start = time.perf_counter()
-                max_sum = max_subarray_sum_n(arr)
-                end = time.perf_counter()
-                sum += (end - start)
-                flag1 = False
-            else:
-                start = time.perf_counter()
-                max_subarray_sum_n(arr)
-                end = time.perf_counter()
-                sum += (end - start)
-        exec_time = (sum / 5)
-        exec_time_ms = int(float("%.2f" % (exec_time * 10 ** 6)))
-        # st.append([max_sum, exec_time_ms])
-        st.append([0, 0])
-        print("%.2f" % (exec_time * 10 ** 6), 'ms')  # running time in miliseconds
     else:
-        print('Wrong complexity input!')
+        print('Wrong complexity')
 
 
 def plot_running_time(lst_n2, lst_nlgn, lst_n):  # may be implemented
@@ -240,7 +166,8 @@ def plot_running_time(lst_n2, lst_nlgn, lst_n):  # may be implemented
         rt_n.append(lst_n[i][1])
 
     array_sizes = [10, 50, 100, 500, 1000, 5000, 10000]
-    plt.plot(array_sizes, rt_n2)
+    plt.subplots(3)
+    plt.subplot(array_sizes, rt_n2)
     plt.plot(array_sizes, rt_nlgn)
     plt.plot(array_sizes, rt_n)
     plt.legend(['n^2', 'nlogn', 'n'], ncol=3, loc='upper left')
