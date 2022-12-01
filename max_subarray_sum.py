@@ -12,16 +12,8 @@ def main():
     A1 = np.array([-2, -5, 6, -2, -3, 1, 5, -6])  # 8
     A2 = np.array([13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7])  # 16
 
-    A3 = create_random_array(10)
-    A4 = create_random_array(50)
-    A5 = create_random_array(100)
-    A6 = create_random_array(500)
-    A7 = create_random_array(1000)
-    A8 = create_random_array(5000)
-    A9 = create_random_array(10000)
-    # A10 = create_random_array(50000)
-    # A11 = create_random_array(100000)
-    array_sizes = [10, 50, 100, 500, 1000, 5000, 10000]
+    array_sizes = [10, 50, 100, 500, 1000, 5000, 10000]  # 50000 and 100000 are removed since they take
+                                                         # too much time to run
     list_of_arrays = []
 
     for i in range(0, 7):
@@ -39,6 +31,25 @@ def main():
                 running_time_threads(list_of_arrays[j], 'nlgn', list_sum_time_nlgn)
             else:
                 running_time_threads(list_of_arrays[j], 'n', list_sum_time_n)
+
+    # print the values calculated
+    for i in range(0, 3):
+        if i == 0:
+            print('**** Values For n^2 Algorithm ****')
+        elif i == 1:
+            print('**** Values For nlogn Algorithm ****')
+        else:
+            print('**** Values For n Algorithm ****')
+        for j in range(len(list_of_arrays)):
+            if i == 0:
+                print('For the size', array_sizes[j], 'Maximum Sum:', list_sum_time_n2[j][0],
+                      'Running Time:', list_sum_time_n2[j][1], 'ms')
+            elif i == 1:
+                print('For the size', array_sizes[j], 'Maximum Sum:', list_sum_time_nlgn[j][0],
+                      'Running Time:', list_sum_time_nlgn[j][1], 'ms')
+            else:
+                print('For the size', array_sizes[j], 'Maximum Sum:', list_sum_time_n[j][0],
+                      'Running Time:', list_sum_time_n[j][1], 'ms')
     plot_running_time(list_sum_time_n2, list_sum_time_nlgn, list_sum_time_n)
 
 
@@ -122,7 +133,7 @@ def running_time_threads(arr, cmplx, sum_time: list):
 
     exec_time = (time_sum / 5)
     exec_time_ms = int(float("%.2f" % (exec_time * 10 ** 6)))  # in ms
-    print(exec_time_ms, 'ms')
+    # print(exec_time_ms, 'ms')
     arr_sum = sum_lst[0]
     sum_time.append([arr_sum, exec_time_ms])
 
@@ -165,12 +176,33 @@ def plot_running_time(lst_n2, lst_nlgn, lst_n):  # may be implemented
     for i in range(0, 7):
         rt_n.append(lst_n[i][1])
 
-    array_sizes = [10, 50, 100, 500, 1000, 5000, 10000]
-    plt.subplots(3)
-    plt.subplot(array_sizes, rt_n2)
-    plt.plot(array_sizes, rt_nlgn)
-    plt.plot(array_sizes, rt_n)
-    plt.legend(['n^2', 'nlogn', 'n'], ncol=3, loc='upper left')
+    array_sizes = np.array([10, 50, 100, 500, 1000, 5000, 10000, 50000, 100000], dtype=np.int64)
+    n2 = np.power(array_sizes, 2)  # n^2 run time
+    nlgn = np.log10(array_sizes) * array_sizes
+    n = array_sizes
+
+    figure, axis = plt.subplots(2, 2, figsize=(10, 10))
+    # For n^2 algorithm
+    axis[0, 0].plot(array_sizes, n2)
+    axis[0, 0].set_title("n^2 Algorithm")
+    axis[0, 0].set_ylim(0)
+
+    # For nlogn algorithm
+    axis[0, 1].plot(array_sizes, nlgn)
+    axis[0, 1].set_title("nlogn Algorithm")
+
+    # For n algorithm
+    axis[1, 0].plot(array_sizes, n)
+    axis[1, 0].set_title("n Algorithm")
+
+    # To compare
+    axis[1, 1].set_ylim(0, 100000)
+    axis[1, 1].plot(array_sizes, n2)
+    axis[1, 1].plot(array_sizes, nlgn)
+    axis[1, 1].plot(array_sizes, n)
+    axis[1, 1].set_title("Three Algorithms")
+    axis[1, 1].legend(['n^2', 'nlgn', 'n'], ncol=3, loc='upper left')
+
     plt.show()
 
 
