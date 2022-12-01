@@ -51,8 +51,6 @@ def main():
                 print('For the size', array_sizes[j], 'Maximum Sum:', list_sum_time_n[j][0],
                       'Running Time:', list_sum_time_n[j][1], 'ms')
     plot_running_time(list_sum_time_n2, list_sum_time_nlgn, list_sum_time_n)
-
-
 def max_subarray_sum_n2(arr):
     max_sum = 0
     for i in range(0, len(arr) - 1):
@@ -95,8 +93,22 @@ def find_max_sum(arr, p, q, r):  # nlgn
     return max(l_sum, r_sum, l_sum + r_sum - arr[q])
 
 
+
+'''This implements kadane's algorithm, a linear time max sub-array finding algorithm.'''
 def max_subarray_sum_n(arr):
+
+    max_local = max_global = arr[0]   # initial and global maximum sums.
+
+    for i in range(1, len(arr)):
+        max_local = max(arr[i], arr[i] + max_local) # compare previous max subarray with current value, if greater, update local
+
+        if max_local > max_global: # if current max is greater than max up to now, update global max.
+            max_global = max_local
+
+    return max_global
+
     return 0
+
 
 
 def print_max_sum(arr, cmp):  # cmp = complexity
