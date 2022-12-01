@@ -1,4 +1,3 @@
-import numpy
 import numpy as np
 import time
 import matplotlib.pyplot
@@ -7,16 +6,15 @@ import matplotlib.pyplot
 def main():
     A1 = np.array([-2, -5, 6, -2, -3, 1, 5, -6])
     A3 = np.array([13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7])
-    A4 = create_random_array(100)  # np array with 16 random values
-    print_max_sum(A1, 'n2')
-    print_max_sum(A3, 'n2')
-    print_running_time(A1, 'n2')
-    print_running_time(A3, 'n2')
-    print_running_time(A4, 'n2')
+    A4 = create_random_array(1000000)  # np array with 16 random values
+    print_max_sum(A1, 'n')
+    print_max_sum(A3, 'n')
+    print_running_time(A1, 'n')
+    print_running_time(A3, 'n')
+    print_running_time(A4, 'n')
 
-    test = [170, 45, 75, 90, 802, 24, 2, 66]  # TODO: delete this in release
-    max_subarray_sum_n(test)    # TODO: delete this in release
-    print(test)
+    x = max_subarray_sum_n(A3)    # TODO: delete this in release
+    print(x)
 def max_subarray_sum_n2(arr):
     max_sum = 0
     for i in range(0, len(arr) - 1):
@@ -32,51 +30,18 @@ def max_subarray_sum_nlgn(arr):
     dummy = 0
 
 
-'''This implements radix sort, a linear time sorting algorithm'''
+'''This implements kadane's algorithm, a linear time max sub-array finding algorithm.'''
 def max_subarray_sum_n(arr):
-    max_val = max(arr)  # finds the max value, and by that extent, largest radix
+    max_local = max_global = arr[0]   # initial and global maximum sums.
 
-    # will run for each radix.
-    digit = 1
-    while max_val / digit >= 1:
-        counting_sort(arr, digit)
-        digit *= 10 # to pass to next radix.
+    for i in range(1, len(arr)):
+        max_local = max(arr[i], arr[i] + max_local) # compare previous max subarray with current value, if greater, update local
 
-'''Counting sort will run in each digit.'''
-def counting_sort(arr, digit):
+        if max_local > max_global: # if current max is greater than max up to now, update global max.
+            max_global = max_local
 
-    # Array C to store the occurrences
-    C =np.empty(10); C.fill(0)
+    return max_global
 
-    # Array for cumulative sum
-    CC = np.empty(10); CC.fill(0)
-
-    B = np.empty(len(arr)); B.fill(0)
-
-    for i in range(len(arr)): # calculate C
-        C[((arr[i] // digit) % 10)] += 1
-
-    # finds cumulative sum array, and by extension; place indicators for each element
-    cumulative_sum = 0 # calculate CC
-    for i in range(len(C)):
-        cumulative_sum += C[i]
-        CC[i] = cumulative_sum
-        C[i] += C[i - 1]
-
-    CC -= 1 # subtract 1 from CC to get actual indices, not indicators
-
-    # move information obtained by CC into the new array, B
-    arr_index = len(arr) - 1
-    while arr_index >= 0:
-
-        index = int(CC[(arr[arr_index] // digit) % 10])
-        B[index] = arr[arr_index]
-        CC[(arr[arr_index] // digit) % 10] -= 1
-        arr_index -=1
-
-    # copy contents of B into original array.
-    for i in range(len(arr)):
-        arr[i] = int(B[i])
 
 
 
@@ -114,7 +79,7 @@ def print_running_time(arr, cmp):  # cmp = complexity
         sum = 0
         for i in range(0, 5):
             start = time.perf_counter()
-            max_subarray_sum_n2(arr)
+            max_subarray_sum_nlgn(arr)
             end = time.perf_counter()
             sum += (end - start)
         exec_time = (sum / 5)
@@ -124,7 +89,7 @@ def print_running_time(arr, cmp):  # cmp = complexity
         sum = 0
         for i in range(0, 5):
             start = time.perf_counter()
-            max_subarray_sum_n2(arr)
+            max_subarray_sum_n(arr)
             end = time.perf_counter()
             sum += (end - start)
         exec_time = (sum / 5)
@@ -139,12 +104,3 @@ def plot_running_time(arr):  # may be implemented
 
 
 main()
-
-
-
-
-
-
-
-
-
