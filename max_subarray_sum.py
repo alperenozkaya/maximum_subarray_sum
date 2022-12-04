@@ -51,13 +51,13 @@ def main():
         for j in range(len(list_of_arrays)):
             if i == 0:
                 print('For the size', array_sizes[j], 'Maximum Sum:', list_sum_time_n2[j][0],
-                      'Running Time:', list_sum_time_n2[j][1], 'ms')
+                      'Running Time:', list_sum_time_n2[j][1], 'μs')
             elif i == 1:
                 print('For the size', array_sizes[j], 'Maximum Sum:', list_sum_time_nlgn[j][0],
-                      'Running Time:', list_sum_time_nlgn[j][1], 'ms')
+                      'Running Time:', list_sum_time_nlgn[j][1], 'μs')
             else:
                 print('For the size', array_sizes[j], 'Maximum Sum:', list_sum_time_n[j][0],
-                      'Running Time:', list_sum_time_n[j][1], 'ms')
+                      'Running Time:', list_sum_time_n[j][1], 'μs')
     plot_running_time(list_sum_time_n2, list_sum_time_nlgn, list_sum_time_n, array_sizes)
 
 
